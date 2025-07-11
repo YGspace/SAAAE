@@ -56,20 +56,6 @@ jupyter notebook SAAAE_image_mask-linear.ipynb
 
 ---
 
-## 📁 Project Structure
-
-```
-SAAAE_image_mask-linear.ipynb      # Main notebook for training and visualization
-models/
-├── saaae.py                       # Model definition
-data/
-├── STL10/                         # Dataset (auto-downloaded)
-results/
-├── recon/                         # Reconstruction outputs
-```
-
----
-
 ## 📊 Quantitative Results
 <img width="1423" height="707" alt="image" src="https://github.com/user-attachments/assets/1c1a974f-3f6a-47fe-9f90-7641808263eb" />
 
@@ -137,7 +123,7 @@ results/
 ---
 
 ## 📘 Citation
-
+https://github.com/YGspace/SAAAE/tree/main
 
 
 ---
