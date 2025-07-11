@@ -71,6 +71,8 @@ results/
 ---
 
 ## 📊 Quantitative Results
+<img width="1423" height="707" alt="image" src="https://github.com/user-attachments/assets/1c1a974f-3f6a-47fe-9f90-7641808263eb" />
+
 
 | Metric       | VAE    | SAAAE  |
 |--------------|--------|--------|
