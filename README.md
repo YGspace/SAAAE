@@ -1,6 +1,28 @@
-# SAAAE
+# SAAAE: Self-Attention Anchored VAE for Noise-Controlled Image Reconstruction
+
+## 🔍 Overview
+
+**SAAAE (Self-Attention Anchored Autoencoder)** is a novel variant of the Variational Autoencoder (VAE) designed for enhanced image reconstruction. While traditional VAEs apply noise uniformly across latent dimensions—often distorting important features—SAAAE introduces self-attention-guided noise suppression, selectively anchoring critical regions in the latent space.
+
+## 🧠 Key Idea
+
+We introduce a self-attention mechanism to compute an importance map over input features, which is then used to control the magnitude of stochastic noise during reparameterization. Latent dimensions deemed “important” by attention are injected with less noise.
+
+```python
+def reparameterize(self, mu, logvar, attention_map):
+    std = torch.exp(0.5 * logvar)
+    eps = torch.randn_like(std)
+    attention_map = (attention_map - attention_map.min()) / (attention_map.max() - attention_map.min())
+    positive_mask = 1 - attention_map  # high attention → less noise
+    return mu + std * (eps * positive_mask)
+
+
+
+
 
 VAE VS SAAAE
+로스 비교
+<img width="1423" height="707" alt="image" src="https://github.com/user-attachments/assets/4ef5d3b9-6d14-4ae2-b8b0-1c911a8f2780" />
 
 Original
 
