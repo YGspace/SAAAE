@@ -93,7 +93,7 @@ results/
 
 | VAE | SAAAE |
 |-----|-------|
-| <img src="https://github.com/user-attachments/assets/141632c3-7755-4a3f-b79b-4b5745177a3a" width="400"/> | <img src="https://github.com/user-attachments/assets/be664478-9823-4bf7-8c75-7ac54d215483" width="400"/> |
+| <img src="https://github.com/user-attachments/assets/141632c3-7755-4a3f-b79b-4b5745177a3a" width="600"/> | <img src="https://github.com/user-attachments/assets/be664478-9823-4bf7-8c75-7ac54d215483" width="600"/> |
 
 ### Epoch 101
 
