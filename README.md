@@ -1,27 +1,92 @@
-# SAAAE: Self-Attention Anchored VAE for Noise-Controlled Image Reconstruction
+SAAAE: Self-Attention Anchored VAE for Noise-Controlled Image Reconstruction
+🔍 Overview
+SAAAE (Self-Attention Anchored Autoencoder) is a novel variant of the Variational Autoencoder (VAE) designed for enhanced image reconstruction. While traditional VAEs apply noise uniformly across latent dimensions—often distorting important features—SAAAE introduces self-attention-guided noise suppression, selectively anchoring critical regions in the latent space.
 
-## 🔍 Overview
-
-**SAAAE (Self-Attention Anchored Autoencoder)** is a novel variant of the Variational Autoencoder (VAE) designed for enhanced image reconstruction. While traditional VAEs apply noise uniformly across latent dimensions—often distorting important features—SAAAE introduces self-attention-guided noise suppression, selectively anchoring critical regions in the latent space.
-
-## 🧠 Key Idea
-
+🧠 Key Idea
 We introduce a self-attention mechanism to compute an importance map over input features, which is then used to control the magnitude of stochastic noise during reparameterization. Latent dimensions deemed “important” by attention are injected with less noise.
 
-```python
+python
+복사
+편집
 def reparameterize(self, mu, logvar, attention_map):
     std = torch.exp(0.5 * logvar)
     eps = torch.randn_like(std)
     attention_map = (attention_map - attention_map.min()) / (attention_map.max() - attention_map.min())
     positive_mask = 1 - attention_map  # high attention → less noise
     return mu + std * (eps * positive_mask)
+This mechanism allows SAAAE to retain semantic integrity during reconstruction, especially under partial masking or corruption.
 
+📦 Features
+✅ Self-supervised attention-based noise modulation
 
+✅ Selective KL divergence regularization
+
+✅ Seamless drop-in replacement for standard VAEs
+
+✅ Tested on image masking & reconstruction tasks
+
+🖼 Dataset
+Dataset: STL-10
+
+Image resolution: 64×64
+
+Preprocessing: Resize → ToTensor → Normalize([-1, 1])
+
+🏃‍♂️ Usage
+1. Install dependencies
+bash
+복사
+편집
+pip install torch torchvision einops torchmetrics matplotlib
+2. Run training notebook
+bash
+복사
+편집
+jupyter notebook SAAAE_image_mask-linear.ipynb
+📁 Project Structure
+bash
+복사
+편집
+SAAAE_image_mask-linear.ipynb      # Main training & evaluation notebook
+models/
+├── saaae.py                       # SAAAE model definition
+data/
+├── STL10/                         # STL10 dataset (auto-downloaded)
+results/
+├── recon/                         # Output image reconstructions
+📊 Results
+Metric	VAE	SAAAE
+MSE ↓	58.98	34.11
+KL+MSE ↓	26.82	20.01
+Convergence	Slow	Faster
+
+SAAAE shows superior fidelity and convergence speed compared to the baseline VAE.
+
+🔬 Applications
+Masked image inpainting
+
+Feature-preserving compression
+
+Denoising & corruption recovery
+
+General-purpose VAE backbone
+
+📘 Citation
+bibtex
+복사
+편집
+@misc{hong2025saaae,
+  title={Self-Attention Anchored VAE for Noise-Controlled Image Reconstruction},
+  author={Younggi Hong et al.},
+  year={2025},
+  note={arXiv preprint in preparation}
+}
+🧩 License
+MIT License
 
 
 
 VAE VS SAAAE
-로스 비교
 <img width="1423" height="707" alt="image" src="https://github.com/user-attachments/assets/4ef5d3b9-6d14-4ae2-b8b0-1c911a8f2780" />
 
 Original
