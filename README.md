@@ -5,32 +5,29 @@ SAAAE (Self-Attention Anchored Autoencoder) is a novel variant of the Variationa
 🧠 Key Idea
 We introduce a self-attention mechanism to compute an importance map over input features, which is then used to control the magnitude of stochastic noise during reparameterization. Latent dimensions deemed “important” by attention are injected with less noise.
 
-python
-복사
-편집
 def reparameterize(self, mu, logvar, attention_map):
     std = torch.exp(0.5 * logvar)
     eps = torch.randn_like(std)
     attention_map = (attention_map - attention_map.min()) / (attention_map.max() - attention_map.min())
     positive_mask = 1 - attention_map  # high attention → less noise
     return mu + std * (eps * positive_mask)
-This mechanism allows SAAAE to retain semantic integrity during reconstruction, especially under partial masking or corruption.
+This mechanism enables SAAAE to retain semantic integrity, especially under masking or noise-corruption.
 
 📦 Features
 ✅ Self-supervised attention-based noise modulation
 
-✅ Selective KL divergence regularization
+✅ KL divergence is selectively applied (decoupled from anchors)
 
-✅ Seamless drop-in replacement for standard VAEs
+✅ Compatible with any VAE-style architecture
 
-✅ Tested on image masking & reconstruction tasks
+✅ Outperforms vanilla VAE in image masking and recovery
 
 🖼 Dataset
-Dataset: STL-10
+STL-10
 
-Image resolution: 64×64
+Image size: 64 × 64
 
-Preprocessing: Resize → ToTensor → Normalize([-1, 1])
+Transform: Resize → ToTensor → Normalize([-1, 1])
 
 🏃‍♂️ Usage
 1. Install dependencies
@@ -38,7 +35,7 @@ bash
 복사
 편집
 pip install torch torchvision einops torchmetrics matplotlib
-2. Run training notebook
+2. Train the model
 bash
 복사
 편집
@@ -47,42 +44,38 @@ jupyter notebook SAAAE_image_mask-linear.ipynb
 bash
 복사
 편집
-SAAAE_image_mask-linear.ipynb      # Main training & evaluation notebook
+SAAAE_image_mask-linear.ipynb      # Main notebook for training and visualization
 models/
-├── saaae.py                       # SAAAE model definition
+├── saaae.py                       # Model definition
 data/
-├── STL10/                         # STL10 dataset (auto-downloaded)
+├── STL10/                         # Dataset (auto-downloaded)
 results/
-├── recon/                         # Output image reconstructions
-📊 Results
+├── recon/                         # Reconstruction outputs
+📊 Quantitative Results
 Metric	VAE	SAAAE
 MSE ↓	58.98	34.11
-KL+MSE ↓	26.82	20.01
+KL + MSE ↓	26.82	20.01
 Convergence	Slow	Faster
 
-SAAAE shows superior fidelity and convergence speed compared to the baseline VAE.
+🖼️ Qualitative Comparison
+Original
+<img src="https://github.com/user-attachments/assets/2e6be6b4-f9cd-44e5-a415-3f4e6f86d1c8" width="400"/>
+Epoch 1
+VAE	SAAAE
+<img src="https://github.com/user-attachments/assets/141632c3-7755-4a3f-b79b-4b5745177a3a" width="400"/>	<img src="https://github.com/user-attachments/assets/be664478-9823-4bf7-8c75-7ac54d215483" width="400"/>
 
-🔬 Applications
-Masked image inpainting
+Epoch 101
+VAE	SAAAE
+<img src="https://github.com/user-attachments/assets/516f65a0-f2ed-4aee-82f5-33a632d6dd9e" width="400"/>	<img src="https://github.com/user-attachments/assets/0bfe3fba-9b1b-4c6a-9e3f-9d34ed40cc9e" width="400"/>
 
-Feature-preserving compression
+Epoch 201
+VAE	SAAAE
+<img src="https://github.com/user-attachments/assets/fcf165cd-79d7-4889-803f-afa769810fae" width="400"/>	<img src="https://github.com/user-attachments/assets/7686cb11-5674-4c91-9471-ffdd517bcb76" width="400"/>
 
-Denoising & corruption recovery
+Epoch 301
+VAE	SAAAE
+<img src="https://github.com/user-attachments/assets/adadaa71-f4a5-4ab3-ac2f-a0ecded0215c" width="400"/>	<img src="https://github.com/user-attachments/assets/5f10b52f-7379-488d-8e76-9e8da950eb8f" width="400"/>
 
-General-purpose VAE backbone
-
-📘 Citation
-bibtex
-복사
-편집
-@misc{hong2025saaae,
-  title={Self-Attention Anchored VAE for Noise-Controlled Image Reconstruction},
-  author={Younggi Hong et al.},
-  year={2025},
-  note={arXiv preprint in preparation}
-}
-🧩 License
-MIT License
 Epoch 1401
 VAE	SAAAE
 <img src="https://github.com/user-attachments/assets/766a56ea-11e7-4312-849b-82f3e430a01b" width="400"/>	<img src="https://github.com/user-attachments/assets/3bd8ad0b-6406-4e05-91fd-d34ae68606b4" width="400"/>
@@ -90,61 +83,3 @@ VAE	SAAAE
 Epoch 2401
 VAE	SAAAE
 <img src="https://github.com/user-attachments/assets/c65e6147-3a46-4e7d-96d2-ee7242522f43" width="400"/>	<img src="https://github.com/user-attachments/assets/07493bc9-533f-4156-91ff-6ab224b040cd" width="400"/>
-
-
-VAE VS SAAAE
-<img width="1423" height="707" alt="image" src="https://github.com/user-attachments/assets/4ef5d3b9-6d14-4ae2-b8b0-1c911a8f2780" />
-
-Original
-
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/2e6be6b4-f9cd-44e5-a415-3f4e6f86d1c8" />
-
-Epoch_1
-
-VAE
-<img width="551" height="343" alt="image" src="https://github.com/user-attachments/assets/141632c3-7755-4a3f-b79b-4b5745177a3a" />
-
-SAAAE
-
-<img width="538" height="334" alt="image" src="https://github.com/user-attachments/assets/be664478-9823-4bf7-8c75-7ac54d215483" />
-
-Epoch_101
-
-VAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/516f65a0-f2ed-4aee-82f5-33a632d6dd9e" />
-
-SAAAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/0bfe3fba-9b1b-4c6a-9e3f-9d34ed40cc9e" />
-
-Epoch_201
-
-VAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/fcf165cd-79d7-4889-803f-afa769810fae" />
-
-SAAAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/7686cb11-5674-4c91-9471-ffdd517bcb76" />
-
-Epoch_301
-
-VAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/adadaa71-f4a5-4ab3-ac2f-a0ecded0215c" />
-
-SAAAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/5f10b52f-7379-488d-8e76-9e8da950eb8f" />
-
-Epoch_1401
-
-VAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/766a56ea-11e7-4312-849b-82f3e430a01b" />
-
-SAAAE
-<img width="540" height="332" alt="image" src="https://github.com/user-attachments/assets/3bd8ad0b-6406-4e05-91fd-d34ae68606b4" />
-
-Epoch_2401
-
-VAE
-<img width="540" height="336" alt="image" src="https://github.com/user-attachments/assets/c65e6147-3a46-4e7d-96d2-ee7242522f43" />
-
-SAAAE
-<img width="540" height="336" alt="image" src="https://github.com/user-attachments/assets/07493bc9-533f-4156-91ff-6ab224b040cd" />
-
