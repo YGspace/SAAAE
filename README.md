@@ -83,7 +83,13 @@ bibtex
 }
 🧩 License
 MIT License
+Epoch 1401
+VAE	SAAAE
+<img src="https://github.com/user-attachments/assets/766a56ea-11e7-4312-849b-82f3e430a01b" width="400"/>	<img src="https://github.com/user-attachments/assets/3bd8ad0b-6406-4e05-91fd-d34ae68606b4" width="400"/>
 
+Epoch 2401
+VAE	SAAAE
+<img src="https://github.com/user-attachments/assets/c65e6147-3a46-4e7d-96d2-ee7242522f43" width="400"/>	<img src="https://github.com/user-attachments/assets/07493bc9-533f-4156-91ff-6ab224b040cd" width="400"/>
 
 
 VAE VS SAAAE
